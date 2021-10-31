@@ -1,6 +1,7 @@
 package main
 
 import (
+	"flag"
 	"html/template"
 	"log"
 	"net/http"
@@ -20,21 +21,23 @@ func (t *templateHandler) ServeHTTP(w http.ResponseWriter, r *http.Request) {
 		t.template = template.Must(template.ParseFiles(filepath.Join("template", t.filename)))
 	})
 
-	err := t.template.Execute(w, nil)
+	err := t.template.Execute(w, r)
 	if err != nil {
 		return
 	}
 }
 
 func main() {
+	var addr = flag.String("addr", ":8080", "アプリケーションのアドレス")
+	flag.Parse()
+
 	r := newRoom()
 	http.Handle("/", &templateHandler{filename: "chat.html"})
 	http.Handle("/room", r)
 	go r.run()
 
-	log.Println("チャット開始！！")
-
-	if err := http.ListenAndServe(":8080", nil); err != nil {
+	log.Println("Webサーバーを開始します、ポート: ", *addr)
+	if err := http.ListenAndServe(*addr, nil); err != nil {
 		log.Fatal("ListenAndServe", err)
 	}
 }
