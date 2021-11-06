@@ -1,3 +1,4 @@
 /chat/go.mod
 /chat/go.sum
+/chat/.env
 .idea
