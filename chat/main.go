@@ -1,6 +1,7 @@
 package main
 
 import (
+	"app/trace"
 	"flag"
 	"github.com/joho/godotenv"
 	"github.com/stretchr/gomniauth"
@@ -58,7 +59,7 @@ func main() {
 		)
 
 	r := newRoom()
-	//r.tracer = trace.New(os.Stdout)
+	r.tracer = trace.New(os.Stdout)
 
 	http.Handle("/chat", MustAuth(&templateHandler{filename: "chat.html"}))
 	http.Handle("/login", &templateHandler{filename: "login.html"})
