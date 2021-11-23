@@ -46,10 +46,21 @@
       }
       socket.onmessage = function (e) {
         const msg = eval("("+e.data+")");
+        
+        const time = new Date(msg.When);
+        const year = time.getFullYear();
+        const month = time.getMonth().toString().padStart(2, '0');
+        const day = time.getDay().toString().padStart(2, '0');
+        const hour = time.getHours().toString().padStart(2, '0');
+        const minute = time.getMinutes().toString().padStart(2, '0');
+        const second = time.getSeconds().toString().padStart(2, '0');
+        
         messages.append(
           $("<li>").append(
             $("<strong>").text(`${msg.Name}: `),
-            $("<span>").text(msg.Message)
+            $("<span>").text(msg.Message),
+            $("<br/>"),
+            $("<span>").text(`${year}-${month}-${day} ${hour}:${minute}:${second}`),
           )
         );
       }
